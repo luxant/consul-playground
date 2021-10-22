@@ -1,0 +1,28 @@
+services:
+  consul-client:
+    depends_on: 
+      - consul-server
+    image: consul-client
+    networks:
+      - consul
+
+  consul-server:
+    image: consul-server
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    networks:
+      - consul
+
+configs:
+  httpd-config:
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
+
+networks:
+  consul:
+    driver: bridge

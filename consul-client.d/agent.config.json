@@ -1,0 +1,9 @@
+{
+    "data_dir": "/consul/data",
+    "ui": true,
+    "retry_join": ["consul-server"],
+    "client_addr": "{{ GetPrivateIP }}",
+    "addresses": {
+		"http" : "{{ GetPrivateIP }}"
+	}
+}

@@ -1,0 +1,38 @@
+alias bs='docker build -t consul-server -f Dockerfile-server .'
+alias bc='docker build -t consul-client -f Dockerfile-client .'
+alias rbs='docker run -it -p 8500:8500 -p 8600:8600 --entrypoint '//bin//bash' consul-server'
+alias rbc='docker run -it -p 8500:8500 -p 8600:8600 --entrypoint '//bin//bash' consul-client'
+alias rs=' docker run -it -p 8500:8500 -p 8600:8600 consul-server'
+
+docker run -it -p 8500:8500 consul-server	
+
+consul agent -node=my-consul -config-dir='./consul.d'
+docker exec 61a991a03162 curl localhost:8500/v1/catalog/nodes
+
+# Send stop signal to consul contaner
+docker exec 7e38de4f4d8f kill -2 1
+
+# Get container ip address
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' b7150ddb49db
+
+           Version: '1.5.2-dev'
+           Node ID: 'e01d596c-1809-35dc-99cf-0eab3b748bbf'
+         Node name: 'my-consul'
+        Datacenter: 'dc1' (Segment: '<all>')
+            Server: true (Bootstrap: false)
+       Client Addr: [127.0.0.1] (HTTP: 8500, HTTPS: -1, gRPC: -1, DNS: 8600)
+      Cluster Addr: 172.17.0.2 (LAN: 8301, WAN: 8302)
+           Encrypt: Gossip: false, TLS-Outgoing: false, TLS-Incoming: false, Auto-Encrypt-TLS: false
+
+# Server 
+
+{
+	"server": true,
+	"bootstrap": true,
+	"data_dir": "consul/data",
+	"ui": true,
+	"client_addr": "{{ GetAllInterfaces | include \"network\" \"172.20.0.0/16\" | limit 1 | attr \"address\" }}",
+	"addresses": {
+		"http": "{{ GetAllInterfaces | include \"network\" \"172.20.0.0/16\" | limit 1 | attr \"address\" }}"
+	}
+}
