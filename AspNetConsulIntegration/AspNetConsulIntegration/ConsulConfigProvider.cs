@@ -18,6 +18,11 @@ public class EntityConfigurationSource : IConfigurationSource
 
 public class A : IConfigurationProvider
 {
+    public A()
+    {
+        
+    }
+
     public IEnumerable<string> GetChildKeys(IEnumerable<string> earlierKeys, string parentPath)
     {
         throw new NotImplementedException();

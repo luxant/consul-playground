@@ -4,14 +4,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<A>(serviceProvider => new A());
 
-builder.Host.ConfigureAppConfiguration(configBuilder =>
-{
-    configBuilder.Sources.Clear();
+//builder.Host.ConfigureAppConfiguration(configBuilder =>
+//{
+//    configBuilder.Sources.Clear();
 
-    configBuilder.AddJsonFile("", optional: true, reloadOnChange: true);
-});
+//});
+
+Console.WriteLine(builder.Configuration.GetSection("SomeConfig:SomeNesting").GetValue<int>("ChildValue"));
 
 var app = builder.Build();
 
