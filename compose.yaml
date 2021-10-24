@@ -1,8 +1,10 @@
 services:
   consul-client:
+    image: consul-client
     depends_on: 
       - consul-server
-    image: consul-client
+    volumes:
+      - data_client:/consul/data
     networks:
       - consul
 
@@ -12,6 +14,8 @@ services:
       - "8500:8500"
       - "8600:8600/tcp"
       - "8600:8600/udp"
+    volumes:
+      - data_server:/consul/data
     networks:
       - consul
 
@@ -26,3 +30,7 @@ secrets:
 networks:
   consul:
     driver: bridge
+
+volumes:
+  data_client:
+  data_server:
