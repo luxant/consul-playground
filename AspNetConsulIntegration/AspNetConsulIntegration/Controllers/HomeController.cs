@@ -8,9 +8,16 @@ namespace AspNetConsulIntegration.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, A a)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
+
+            var someValue = configuration.GetSection("appsettings/qa4/web").GetValue<int>("SomeValue");
+
+            // This will throw exception if the "What" prop is no defined in the config json object
+            //var c = configuration.GetSection("appsettings/qa4/web").GetValue<int>("What");
+
+            var someWholeSection = configuration.GetSection("appsettings/qa4/web").Value;
         }
 
         public IActionResult Index()

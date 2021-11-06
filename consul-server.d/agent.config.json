@@ -2,9 +2,8 @@
 	"server": true,
 	"bootstrap": true,
 	"data_dir": "/consul/data",
-	"ui": true,
-	"client_addr": "{{ GetPrivateIP }}",
+    "ui": true,
 	"addresses": {
-		"http" : "{{ GetPrivateIP }}"
+        "http": "0.0.0.0"
 	}
 }

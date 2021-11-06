@@ -5,13 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Host.ConfigureAppConfiguration(configBuilder =>
-//{
-//    configBuilder.Sources.Clear();
+builder.Host.ConfigureAppConfiguration(configBuilder =>
+{
+    configBuilder.Sources.Add(new ConsulConfigurationSource());
+});
 
-//});
-
-Console.WriteLine(builder.Configuration.GetSection("SomeConfig:SomeNesting").GetValue<int>("ChildValue"));
+// If want to use extension method instead uncomment this one and comment above
+//builder.Configuration.AddConsulConfigProvider();
 
 var app = builder.Build();
 
@@ -35,3 +35,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+// Extension method to add Consul Config Provider
+public static class ConfigurationBuilderExtensions
+{
+    public static IConfigurationBuilder AddConsulConfigProvider(
+        this IConfigurationBuilder builder)
+    {
+        return builder.Add(new ConsulConfigurationSource());
+    }
+}
