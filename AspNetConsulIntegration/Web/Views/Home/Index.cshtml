@@ -1,0 +1,13 @@
+﻿@using System.Text.Json
+@{
+    ViewData["Title"] = "App config from Consul";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<p>Config JSON loaded from Consul Key-Value (KV) store</p>
+
+<pre>
+@System.Text.Json.JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true })
+</pre>

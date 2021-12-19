@@ -1,0 +1,15 @@
+﻿@using DnsClient
+@model IDnsQueryResponse
+
+@{
+    ViewData["Title"] = "DNS Records queried with DnsClient";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<div>
+    @foreach (var record in Model.AllRecords)
+    {
+        <pre>@record.ToString()</pre>
+    }
+</div>

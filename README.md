@@ -1,3 +1,13 @@
+# Building the images
+
+## Server image
+
+`docker build -t consul-server -f Dockerfile-server .`
+
+## Client image
+
+`docker build -t consul-client -f Dockerfile-client .`
+
 # Running the project
 
 `docker compose up`

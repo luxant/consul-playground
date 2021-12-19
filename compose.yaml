@@ -1,19 +1,33 @@
 services:
-  consul-client:
+# Clients 1
+  consul-client1:
     image: consul-client
     depends_on: 
       - consul-server
     volumes:
-      - data_client:/consul/data
+      - data_client1:/consul/data
+      - /c/tmp:/app
     networks:
       - consul
 
+# Clients 2
+  consul-client2:
+    image: consul-client
+    depends_on: 
+      - consul-server
+    ports:
+      - "80:5000"
+    volumes:
+      - data_client2:/consul/data
+      - /c/tmp:/app
+    networks:
+      - consul
+
+# Server
   consul-server:
     image: consul-server
     ports:
       - "8500:8500"
-      - "8600:8600/tcp"
-      - "8600:8600/udp"
     volumes:
       - data_server:/consul/data
     networks:
@@ -32,5 +46,6 @@ networks:
     driver: bridge
 
 volumes:
-  data_client:
+  data_client1:
+  data_client2:
   data_server:

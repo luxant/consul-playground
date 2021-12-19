@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Consul registered services";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<h1>List of services registered on Consul</h1>
+<pre>
+    @System.Text.Json.JsonSerializer.Serialize(Model,  new JsonSerializerOptions { WriteIndented = true })
+</pre>
