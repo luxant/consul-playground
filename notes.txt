@@ -7,7 +7,7 @@ alias rs=' docker run -it -p 8500:8500 -p 8600:8600 consul-server'
 docker run -it -p 8500:8500 consul-server	
 
 consul agent -node=my-consul -config-dir='./consul.d'
-docker exec 61a991a03162 curl localhost:8500/v1/catalog/nodes
+docker exec -it consul-playground-consul-client2-1 //bin//bash
 
 # Send stop signal to consul contaner
 docker exec 7e38de4f4d8f kill -2 1

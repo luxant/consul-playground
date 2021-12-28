@@ -1,0 +1,13 @@
+﻿@using DnsClient
+@model string
+
+@{
+    ViewData["Title"] = "Load balancer";
+}
+<h1>@ViewData["Title"]</h1>
+
+<h2>Got response from</h2>
+
+<pre>
+    @Html.Raw(Model)
+</pre>

@@ -4,6 +4,7 @@
 	"data_dir": "/consul/data",
     "ui": true,
 	"addresses": {
-        "http": "0.0.0.0"
+        "http": "0.0.0.0",
+        "dns": "0.0.0.0"
 	}
 }

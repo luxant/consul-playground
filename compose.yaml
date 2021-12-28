@@ -28,6 +28,8 @@ services:
     image: consul-server
     ports:
       - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
     volumes:
       - data_server:/consul/data
     networks:

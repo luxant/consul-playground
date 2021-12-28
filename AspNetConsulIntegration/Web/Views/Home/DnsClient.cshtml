@@ -7,8 +7,22 @@
 <h1>@ViewData["Title"]</h1>
 
 
+<h2>All records</h2>
+
 <div>
+    @{
+        var recordIndex = 1;
+    }
     @foreach (var record in Model.AllRecords)
+    {
+        <pre>@(recordIndex++). @record.ToString()</pre>
+    }
+</div>
+
+<h2>Address records</h2>
+
+<div>
+    @foreach (var record in Model.AllRecords.AddressRecords())
     {
         <pre>@record.ToString()</pre>
     }

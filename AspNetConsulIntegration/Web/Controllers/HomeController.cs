@@ -26,6 +26,23 @@ namespace AspNetConsulIntegration.Controllers
             return View(_appConfig);
         }
 
+        public IActionResult Info()
+        {
+            var addresses = Dns.GetHostAddresses(Dns.GetHostName());
+
+            var result = addresses.Where(x => x.AddressFamily == AddressFamily.InterNetwork)
+                .Select(x => new
+                {
+                    AddressFamily = Enum.GetName(x.AddressFamily),
+                    Address = x.ToString(),
+                });
+
+            return Json(result, new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = true,
+            });
+        }
+
         public async Task<IActionResult> Services()
         {
             var services = _consulClient.Catalog.Services();
@@ -38,28 +55,30 @@ namespace AspNetConsulIntegration.Controllers
             });
         }
 
-        private static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
-
         public IActionResult DnsClient()
         {
-            //var dnsClient = new LookupClient(IPAddress.Parse(GetLocalIPAddress()), 8600);
             var dnsClient = new LookupClient(IPAddress.Parse("127.0.0.1"), 8600);
 
-            var queryResult = dnsClient.Query("web.service.dc1.consul", QueryType.ANY);
+            var queryResult = dnsClient.Query("web.service.consul", QueryType.ANY);
 
             return View(queryResult);
         }
+
+
+        public async Task<IActionResult> LoadBalance()
+        {
+            var dnsClient = new LookupClient(IPAddress.Parse("127.0.0.1"), 8600);
+
+            var queryResult = dnsClient.Query("web.service.consul", QueryType.SRV);
+
+            var address  = queryResult.AllRecords.AddressRecords().First();
+
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"http://{address.Address}:5000/Home/Info");
+
+            return View(model: await response.Content.ReadAsStringAsync());
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
